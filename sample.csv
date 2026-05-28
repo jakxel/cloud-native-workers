@@ -1,0 +1,11 @@
+name,age,salary,department,score
+Alice,30,75000,Engineering,92.5
+Bob,25,55000,Marketing,88.0
+Carol,35,95000,Engineering,95.1
+Dave,28,,Sales,
+Eve,42,110000,Engineering,97.3
+Frank,31,62000,Marketing,79.8
+Grace,29,58000,Sales,85.2
+Hank,38,88000,Engineering,91.0
+Ivy,26,51000,Marketing,
+Jack,45,120000,Engineering,98.4
