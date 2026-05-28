@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - AWS_BUCKET=${AWS_BUCKET:-}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+    volumes:
+      - shared_uploads:/shared/uploads
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  worker_1:
+    build: ./worker
+    command: python -u worker.py
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - WORKER_ID=worker_1
+    volumes:
+      - shared_uploads:/shared/uploads
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  worker_2:
+    build: ./worker
+    command: python -u worker.py
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - WORKER_ID=worker_2
+    volumes:
+      - shared_uploads:/shared/uploads
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  worker_3:
+    build: ./worker
+    command: python -u worker.py
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - WORKER_ID=worker_3
+    volumes:
+      - shared_uploads:/shared/uploads
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+
+volumes:
+  shared_uploads:

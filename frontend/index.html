@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSV Processor</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header>
+  <h1>CSV Processor</h1>
+  <p>Distributed cloud-native processing with Docker workers &amp; Redis</p>
+</header>
+
+<div class="main">
+
+  <!-- Drop Zone -->
+  <div id="drop-zone">
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-8m0 0-3 3m3-3 3 3M6.75 19.5h10.5A2.25 2.25 0 0 0 19.5 17.25v-9A2.25 2.25 0 0 0 17.25 6H6.75A2.25 2.25 0 0 0 4.5 8.25v9A2.25 2.25 0 0 0 6.75 19.5z"/></svg>
+    <h2>Drop a CSV file here</h2>
+    <p>or click to browse from your computer</p>
+     <input type="file" id="file-input" accept=".csv" />
+    <div class="btn-row">
+      <button class="btn btn-primary" id="browse-btn">Browse file</button>
+      <button class="btn btn-ghost" id="clear-btn">Clear history</button>
+    </div>
+  </div>
+
+  <!-- Workers -->
+  <div id="workers-section">
+    <h3>Workers</h3>
+    <div id="workers-list">
+      <div class="worker-row"><div class="worker-dot" id="dot-worker_1"></div><span class="worker-name">worker_1</span><span class="worker-task" id="status-worker_1">idle</span></div>
+      <div class="worker-row"><div class="worker-dot" id="dot-worker_2"></div><span class="worker-name">worker_2</span><span class="worker-task" id="status-worker_2">idle</span></div>
+      <div class="worker-row"><div class="worker-dot" id="dot-worker_3"></div><span class="worker-name">worker_3</span><span class="worker-task" id="status-worker_3">idle</span></div>
+    </div>
+  </div>
+
+  <!-- Task History -->
+  <div>
+    <div class="section-title">
+      <span>Tasks</span>
+      <span id="task-count" style="font-weight:400;text-transform:none;font-size:0.85rem;color:var(--muted)"></span>
+    </div>
+    <div id="tasks-container" style="margin-top:0.8rem"></div>
+  </div>
+
+</div>
+<script src="app.js"></script>
+</script>
+</body>
+</html>
