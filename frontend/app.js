@@ -143,11 +143,22 @@ const API = (window.location.hostname === 'localhost' || window.location.hostnam
       <div id="body-"></div>
     `;
 
+    const badge = el.querySelector('.badge');
+    const bar = el.querySelector('.progress-fill');
+    const meta = el.querySelector('.task-meta');
+    const body = el.querySelector('div[id^="body-"]');
+
     let _id = taskId || '_tmp_' + Date.now();
     function applyId(id) {
-      el.querySelectorAll('[id$=""]').forEach(n => {
-        const base = n.id.replace(/-$/, '');
-        n.id = base + '-' + id;
+      const idMap = [
+        { base: 'meta', selector: '#meta-' },
+        { base: 'badge', selector: '#badge-' },
+        { base: 'bar', selector: '#bar-' },
+        { base: 'body', selector: '#body-' },
+      ];
+      idMap.forEach(({ base, selector }) => {
+        const node = el.querySelector(selector);
+        if (node) node.id = `${base}-${id}`;
       });
       _id = id;
     }
@@ -157,11 +168,7 @@ const API = (window.location.hostname === 'localhost' || window.location.hostnam
 
     function update(data) {
       const { status, worker_id, result, error } = data;
-      const badge = document.getElementById(`badge-${_id}`);
-      const bar   = document.getElementById(`bar-${_id}`);
-      const meta  = document.getElementById(`meta-${_id}`);
-      const body  = document.getElementById(`body-${_id}`);
-      if (!badge) return;
+      if (!badge || !bar || !meta || !body) return;
 
       badge.className = `badge badge-${status}`;
 
